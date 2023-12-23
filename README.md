@@ -1,6 +1,6 @@
 # Lib4package
 
-Lib4package is a library to handle package metadata to be included in a Software Bill of Materials (SBOMs). It supports SBOMs created in both
+Lib4package is a library to handle package metadata to be included in a Software Bill of Materials (SBOMs). The data should be suitable for SBOMs created in both
 [SPDX](https://www.spdx.org) and [CycloneDX](https://www.cyclonedx.org) formats.
 
 It has been developed on the assumption that having a common way of obtaining component metadata regardless of the language ecosystem will be useful to developers.
@@ -128,9 +128,6 @@ The following code sample shows the use of the Metadata module.
 ## License
 
 Licensed under the Apache 2.0 Licence.
-
-The tool uses a local copy of the [SPDX Licenses List](https://github.com/spdx/license-list-data) which is released under
-[Creative Commons Attribution 3.0 (CC-BY-3.0)](http://creativecommons.org/licenses/by/3.0/).
 
 ## Limitations
 

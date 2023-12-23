@@ -23,10 +23,10 @@ for p in ["lib4sbom", "idna"]:
     print(m.get_checksum(version = m.get_latest_release()))
     print ("Package Originator")
     print(m.get_originator())
-print ("JAVA TESTS")
+print ("\nJAVA TESTS")
 print ("==========")
 m = Metadata("java")
-p = "apache-commons"
+p = "org.slf4j:slf4j-api"
 print(f"Process package {p}")
 m.get_package(p)
 # print (m.print_data())
@@ -46,7 +46,3 @@ print("Checksum for latest release (explicit)")
 print(m.get_checksum(version=m.get_latest_release()))
 print("Package Originator")
 print(m.get_originator())
-
-
-
-#m = Metadata("rust")

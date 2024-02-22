@@ -31,7 +31,8 @@ _class_ **Metadata**(_ecosystem="python"_, _debug=False_)
 
 This creates a simple Metadata object. The object takes two optional parameters, _ecosystem_,
 which represents the language ecosystem to use (the default is Python), and _debug_ which is used to enable
-the generation of debugging information (the default is False).
+the generation of debugging information (the default is False). The appropriate [PURL](https://github.com/package-url/purl-spec)
+type can also be specified for the ecosystem e.g. pypi for Python.
 
 The following language ecosystems are supported:
 

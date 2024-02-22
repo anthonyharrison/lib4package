@@ -10,12 +10,22 @@ import requests
 class Metadata:
     def __init__(self, ecosystem="python", debug=False):
         registry = {
+            "cargo":"crates.io",
+            "cpan" : "metacpan.org",
+            "cran" : "cran.r-project.org",
             "dart": "pub.dev",
+            "gem": "rubygems.org",
             "go": "proxy.golang.org",
+            "golang": "proxy.golang.org",
             "java": "repo1.maven.org",
             "javascript": "npmjs.org",
+            "maven": "repo1.maven.org",
             ".net": "nuget.org",
+            "npm": "npmjs.org",
+            "nuget": "nuget.org",
             "perl": "metacpan.org",
+            "pub": "pub.dev",
+            "pypi": "pypi.org",
             "python": "pypi.org",
             "r": "cran.r-project.org",
             "ruby": "rubygems.org",
@@ -27,6 +37,8 @@ class Metadata:
         self.ecosystem = None
         if ecosystem.lower() in registry:
             self.ecosystem = registry[ecosystem.lower()]
+        elif self.debug:
+            print (f"Invalid ecosystem {ecosystem} specified.")
         self.package_name = None
 
     def get_ecosystem(self):
@@ -40,14 +52,18 @@ class Metadata:
 
             if self.debug:
                 print(url)
-            self.package_metadata = requests.get(url).json()
-            # Check that module has been found
-            if self.package_metadata.get("error") is not None:
-                if self.debug:
-                    print(f"Unable to find {name} - version {version}")
+            try:
+                self.package_metadata = requests.get(url).json()
+                # Check that module has been found
+                if self.package_metadata.get("error") is not None:
+                    if self.debug:
+                        print(f"Unable to find {name} - version {version}")
+                    self.package_metadata = {}
+                else:
+                    self.package_name = name
+            except:
+                # Potential JSON error
                 self.package_metadata = {}
-            else:
-                self.package_name = name
 
     def _check(self):
         return len(self.package_metadata) > 0

@@ -141,7 +141,7 @@ class Metadata:
         if self._check() and self._check_data():
             if "tags" in self.package_metadata["repo_metadata"]:
                 for tag in self.package_metadata["repo_metadata"]["tags"]:
-                    if version in tag["name"]:
+                    if version == tag["name"].lower().replace("v",""):
                         return updated_versions
                     else:
                         updated_versions += 1

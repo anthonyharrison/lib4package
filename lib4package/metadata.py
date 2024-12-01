@@ -145,7 +145,7 @@ class Metadata:
         return self.get_value("homepage")
 
     def get_license(self):
-        the_licence = None
+        the_licence = ""
         if self._check() and self._check_data():
             if self.debug:
                 print(f"Extract licenses for {self.package_name}")

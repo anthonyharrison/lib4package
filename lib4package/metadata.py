@@ -40,6 +40,9 @@ class Metadata:
         elif self.debug:
             print (f"Invalid ecosystem {ecosystem} specified.")
         self.package_name = None
+        self.package_release_date = None
+        self.package_checksum = None
+        self.package_version = None
 
     def get_ecosystem(self):
         return self.ecosystem
@@ -47,8 +50,6 @@ class Metadata:
     def get_package(self, name, version=None):
         if self.ecosystem is not None:
             url = f"https://packages.ecosyste.ms/api/v1/registries/{self.ecosystem}/packages/{name}"
-            if version is not None:
-                url = f"{url}/versions/{version}"
 
             if self.debug:
                 print(url)
@@ -61,6 +62,22 @@ class Metadata:
                     self.package_metadata = {}
                 else:
                     self.package_name = name
+
+                # If version specified get additional version specific data
+                if version is not None:
+                    if self.debug:
+                        print (f"Get version specific data for {name}")
+                    url = f"{url}/versions/{version}"
+                    self.package_metadata_version = requests.get(url).json()
+                    if self.package_metadata_version.get("error") is not None:
+                        if self.debug:
+                            print(f"Unable to get version specific data for {name}")
+                        self.package_metadata = {}
+                    else:
+                        # And extract checksum and published date
+                        self.package_release_date = self.package_metadata_version.get("published_at")
+                        self.package_checksum = self.package_metadata_version.get("integrity")
+                        self.package_version = version
             except:
                 # Potential JSON error
                 self.package_metadata = {}
@@ -80,7 +97,9 @@ class Metadata:
     # Get attributes
     def show_checksum(self, version=None):
         if self._check() and self._check_data():
-            if "tags" in self.package_metadata["repo_metadata"]:
+            if self.package_checksum is not None:
+                print (f"{self.package_version} - {self.package_checksum}")
+            elif "tags" in self.package_metadata["repo_metadata"]:
                 for tag in self.package_metadata["repo_metadata"]["tags"]:
                     if version is not None:
                         if version in tag["name"]:
@@ -90,11 +109,13 @@ class Metadata:
 
     def get_checksum(self, version=None):
         if self._check() and self._check_data():
+            if self.package_checksum is not None:
+                return self.package_checksum.replace("sha256-",""), "SHA256"
             if "tags" in self.package_metadata["repo_metadata"]:
                 if version is not None:
                     for tag in self.package_metadata["repo_metadata"]["tags"]:
                         if version in tag["name"]:
-                            return tag["sha"]
+                            return tag["sha"], "SHA1"
                 else:
                     # Return latest
                     latest_version = self.get_latest_version()
@@ -105,8 +126,8 @@ class Metadata:
                             latest_version
                             in self.package_metadata["repo_metadata"]["tags"][0]["name"]
                         ):
-                            return self.package_metadata["repo_metadata"]["tags"][0]["sha"]
-        return None
+                            return self.package_metadata["repo_metadata"]["tags"][0]["sha"], "SHA1"
+        return None, None
 
     def get_value(self, key, default=None):
         if not self._check():
@@ -156,6 +177,8 @@ class Metadata:
         return self.get_latest_release()
 
     def get_latest_release_time(self):
+        if self.package_release_date is not None:
+            return self.package_release_date
         return self.get_value("latest_release_published_at")
 
     def get_downloadlocation(self):

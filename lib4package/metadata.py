@@ -98,12 +98,14 @@ class Metadata:
                 else:
                     # Return latest
                     latest_version = self.get_latest_version()
-                    # Check latest version matches the tag
-                    if (
-                        latest_version
-                        in self.package_metadata["repo_metadata"]["tags"][0]["name"]
-                    ):
-                        return self.package_metadata["repo_metadata"]["tags"][0]["sha"]
+                    # Check that there are tags!
+                    if len(self.package_metadata["repo_metadata"]["tags"]) > 0:
+                        # Check latest version matches the tag
+                        if (
+                            latest_version
+                            in self.package_metadata["repo_metadata"]["tags"][0]["name"]
+                        ):
+                            return self.package_metadata["repo_metadata"]["tags"][0]["sha"]
         return None
 
     def get_value(self, key, default=None):

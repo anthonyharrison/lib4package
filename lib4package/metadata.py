@@ -153,6 +153,15 @@ class Metadata:
                 the_licence = self.package_metadata["repo_metadata"]["license"]
             else:
                 the_licence = self.get_value("licenses", "")
+            if the_licence is not None:
+                # Might be multiple licenses
+                license_list = the_licence.split(",")
+                the_licence = ""
+                for license in license_list:
+                    the_licence = f"{the_licence} {license.strip()} AND"
+                # Remove extraneous " AND "
+                the_licence = the_licence[:-4].strip()
+
         return the_licence
 
     def get_no_of_versions(self):

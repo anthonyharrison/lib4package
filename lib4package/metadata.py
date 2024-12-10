@@ -1,6 +1,7 @@
 # Copyright (C) 2023 Anthony Harrison
 # SPDX-License-Identifier: Apache-2.0
 
+import datetime
 import json
 import sys
 
@@ -185,10 +186,20 @@ class Metadata:
     def get_latest_version(self):
         return self.get_latest_release()
 
+    def _sbom_time(self, time_str):
+        if time_str is not None:
+            # Convert to format '%Y-%m-%dT%H:%M:%SZ
+            dt_obj = datetime.datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+            # Format the datetime object to the desired format
+            return dt_obj.strftime('%Y-%m-%dT%H:%M:%SZ')
+        return ""
+
     def get_latest_release_time(self):
         if self.package_release_date is not None:
-            return self.package_release_date
-        return self.get_value("latest_release_published_at")
+            time_str = self.package_release_date
+        else:
+            time_str = self.get_value("latest_release_published_at")
+        return self._sbom_time(time_str)
 
     def get_downloadlocation(self):
         return self.get_value("registry_url")

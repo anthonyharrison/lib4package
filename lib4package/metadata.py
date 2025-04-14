@@ -25,6 +25,7 @@ class Metadata:
             "npm": "npmjs.org",
             "nuget": "nuget.org",
             "perl": "metacpan.org",
+            "php" : "packagist.org",
             "pub": "pub.dev",
             "pypi": "pypi.org",
             "python": "pypi.org",

@@ -193,7 +193,7 @@ class Metadata:
             dt_obj = datetime.datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S.%fZ")
             # Format the datetime object to the desired format
             return dt_obj.strftime('%Y-%m-%dT%H:%M:%SZ')
-        return ""
+        return None
 
     def get_latest_release_time(self):
         if self.package_release_date is not None:

@@ -42,6 +42,7 @@ The following language ecosystems are supported:
 - javascript
 - .net
 - perl
+- php
 - python
 - r
 - ruby

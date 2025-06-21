@@ -163,6 +163,8 @@ class Metadata:
                     the_licence = f"{the_licence} {license.strip()} AND"
                 # Remove extraneous " AND "
                 the_licence = the_licence[:-4].strip()
+            else:
+                the_licence = ""
 
         return the_licence
 
